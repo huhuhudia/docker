@@ -31,7 +31,7 @@ var runCmd = cli.Command{
 var initCmd = cli.Command{
 	Name: "init",
 	Usage: "init container process run users process in container . Do not call it outside ",
-	Action: func(ctx cli.Context) error{
+	Action: func(ctx *cli.Context) error{
 		if len(ctx.Args()) < 1{
 			return def.MissingArgsErr
 		}
