@@ -10,9 +10,8 @@ func NewParentProcess(tty bool, command string) *exec.Cmd {
 	args := []string{"init", command}
 	cmd := exec.Command("/proc/self/exe", args...)
 	cmd.SysProcAttr = &syscall.SysProcAttr{
-		// uts pid ns net ipc
-		Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID | syscall.CLONE_NEWNS |
-			syscall.CLONE_NEWNET | syscall.CLONE_NEWIPC,
+		Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWIPC | syscall.CLONE_NEWPID |
+			syscall.CLONE_NEWNS | syscall.CLONE_NEWUSER| syscall.CLONE_NEWNET,
 		UidMappings: []syscall.SysProcIDMap{
 			{	ContainerID: 0,
 				HostID:      0,
