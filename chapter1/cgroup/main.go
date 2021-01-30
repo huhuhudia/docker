@@ -16,7 +16,7 @@ func main(){
 		fmt.Printf("current pid :%v", syscall.Getpid())
 		fmt.Println()
 
-		cmd := exec.Command("sh", "-c", "stress --vm-bytes 1000m ")
+		cmd := exec.Command("sh", "-c", "stress --vm-bytes 1000m --vm-keep -m 1")
 		cmd.SysProcAttr = &syscall.SysProcAttr{
 
 		}
