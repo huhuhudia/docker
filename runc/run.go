@@ -1,51 +1,50 @@
 package main
 
 import (
-	"github.com/huhuhudia/docker/runc/container"
-	"github.com/huhuhudia/docker/runc/def"
+	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
+	"github.com/huhuhudia/docker/runc/container"
 	"os"
 )
 
-var runCmd = cli.Command{
+var runCommand = cli.Command{
 	Name: "run",
-	Usage:`create a container with namespace and cgroup limit mydocker run -ti [command]`,
+	Usage: `Create a container with namespace and cgroups limit
+			mydocker run -ti [command]`,
 	Flags: []cli.Flag{
 		cli.BoolFlag{
-			Name:"ti",
+			Name:  "ti",
 			Usage: "enable tty",
 		},
 	},
-	Action: func(context *cli.Context) error{
-		if len(context.Args()) < 1{
-			return def.MissingArgsErr
+	Action: func(context *cli.Context) error {
+		if len(context.Args()) < 1 {
+			return fmt.Errorf("Missing container command")
 		}
 		cmd := context.Args().Get(0)
 		tty := context.Bool("ti")
-		Run(tty,cmd)
+		Run(tty, cmd)
 		return nil
 	},
 }
 
-var initCmd = cli.Command{
-	Name: "init",
-	Usage: "init container process run users process in container . Do not call it outside ",
-	Action: func(ctx *cli.Context) error{
-		if len(ctx.Args()) < 1{
-			return def.MissingArgsErr
-		}
-		cmd := ctx.Args().Get(0)
-		log.Infoln("init command :%v", cmd)
+var initCommand = cli.Command{
+	Name:  "init",
+	Usage: "Init container process run user's process in container. Do not call it outside",
+	Action: func(context *cli.Context) error {
+		log.Infof("init come on")
+		cmd := context.Args().Get(0)
+		log.Infof("command %s", cmd)
 		err := container.RunContainerInitProcess(cmd, nil)
 		return err
 	},
 }
 
-func Run(tty bool, command string){
+func Run(tty bool, command string) {
 	parent := container.NewParentProcess(tty, command)
-	if err := parent.Start(); err != nil{
-		log.Errorln(err)
+	if err := parent.Start(); err != nil {
+		log.Error(err)
 	}
 	parent.Wait()
 	os.Exit(-1)
