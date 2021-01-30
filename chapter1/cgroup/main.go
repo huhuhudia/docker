@@ -29,6 +29,7 @@ func main(){
 			os.Exit(1)
 		}
 	}
+	fmt.Println("start create cgroup limit ")
 	cmd := exec.Command("/proc/self/exe")
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Cloneflags: syscall.CLONE_NEWUTS| syscall.CLONE_NEWPID | syscall.CLONE_NEWNS,
