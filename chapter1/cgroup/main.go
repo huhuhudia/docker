@@ -43,7 +43,7 @@ func main() {
 		fmt.Printf("limit process pid : %v", cmd.Process.Pid)
 		memlimit := "testmemlmit"
 		os.Mkdir(path.Join(cgroupMemoryHierachyMount, memlimit), 0755)
-		ioutil.WriteFile(path.Join(cgroupMemoryHierachyMount, memlimit, "tasks"), []byte(fmt.Sprint("%v", cmd.Process.Pid)), 0644)
+		CheckErr(ioutil.WriteFile(path.Join(cgroupMemoryHierachyMount, memlimit, "tasks"), []byte(fmt.Sprint("%v", cmd.Process.Pid)), 0644))
 		CheckErr(ioutil.WriteFile(path.Join(cgroupMemoryHierachyMount, memlimit, "memory.limit_in_bytes"), []byte("100m"), 0644))
 		cmd.Process.Wait()
 	}
